@@ -30,20 +30,13 @@ db.createCollection("categorie", {
     }
 })
 
-db.createCollection("billets", {
+db.createCollection("tickets", {
     validator: {
         $and: [
+            { id_user: { $type: "string" } },
             { title: { $type: "string" } },
             { body: { $type: "string" } },
         ]
     }
 })
 
-db.users.insertOne({
-    _id: 101011,
-    login: 'mici',
-    email: 'mici@gmail.com',
-    password: 'jean',
-    type: true
-}
-)
