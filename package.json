@@ -1,10 +1,11 @@
 {
-  "name": "jour3",
+  "name": "mern-app",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon ex_2/server"
+    "start": "node server",
+    "dev": "nodemon server"
   },
   "keywords": [],
   "author": "",

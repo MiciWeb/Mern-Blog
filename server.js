@@ -19,7 +19,9 @@ MongoClient.connect(
     { useNewUrlParser: true, useUnifiedTopology: true },
     function (err, client) {
         db = client.db()
-        app.listen(port)
+        app.listen(port,()=>{
+            console.log("server started at http://localhost:" + port)
+        })
     }
 )
 
