@@ -100,7 +100,7 @@ app.get("/tickets", (req, res) => {
 })
 
 app.get("/comments", (req, res) => {
-    db.collection("comments").find().sort().toArray(function (err, data) {
+    db.collection("comments").find().sort({ _id: -1 }).toArray(function (err, data) {
         if (err) throw err;
         if (data) {
             res.status(200).json(data);
@@ -152,6 +152,15 @@ app.post("/delete/tickets", (req, res) => {
     var o_id = new ObjectId(req.body.id);
 
     db.collection('tickets').deleteOne({
+        _id: o_id,
+    }, function (err) {
+        res.status(200);
+    })
+})
+app.post("/delete/comments", (req, res) => {
+    var o_id = new ObjectId(req.body.id);
+
+    db.collection('comments').deleteOne({
         _id: o_id,
     }, function (err) {
         res.status(200);

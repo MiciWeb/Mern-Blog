@@ -48,7 +48,15 @@ export default function Edit() {
         fetchData()
     }, [])
 
-
+    function handleDelete(id) {
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+            body: JSON.stringify({id: id})
+        }
+        fetch("http://localhost:4242/delete/comments", requestOptions)
+        window.location.reload()
+    }
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -100,6 +108,7 @@ export default function Edit() {
                             if (cookies.user === name && ticket._id === id) {
                                 return (
                                     <>
+                                    
                                         <li className="list-group-item">
                                             Update:
                                         </li>
@@ -123,7 +132,30 @@ export default function Edit() {
                                         <li key={uuid()} className="list-group-item body">
                                             {ticket.body}
                                         </li>
+                                        
                                         <br />
+                                    <u>Comment:</u>
+                                    <li key={uuid()} className="list-group-item body comment">
+                                        <ul>
+                                            {comments == [] ? <div className="Chargement">0 comments</div> :
+                                                comments.map((comment) => {
+                                                    if (ticket._id === comment.ticketid) {
+                                                        return (
+                                                            <>
+                                                                <li>
+                                                                    {comment.comment} de -{comment.user} 
+                                                                    <button className="del" onClick={() => handleDelete(comment._id)}><i className="far fa-trash-alt"></i></button>
+
+                                                                </li>
+                                                            </>
+                                                        )
+                                                    }
+                                                })}
+                                        </ul>
+                                    </li>
+                                    <input className="input-add" value={comment} onChange={onCommentChange} placeholder="Leave a comment" />
+                                    <button onClick={() => handleCommentSubmit(ticket._id)} class="btn btn-success btn-comment" type="submit">Add</button>
+                               
                                     </>
                                 )
                             }
@@ -148,7 +180,7 @@ export default function Edit() {
                                                         return (
                                                             <>
                                                                 <li>
-                                                                    {comment.comment} - {comment.user}
+                                                                    {comment.comment} de -{comment.user}
                                                                 </li>
                                                             </>
                                                         )
