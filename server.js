@@ -7,7 +7,7 @@ var sha1 = require('sha1')
 var cors = require('cors')
 var uniqid = require("uniqid")
 const date = require('date-and-time');
-var ObjectId = require('mongodb').ObjectId; 
+var ObjectId = require('mongodb').ObjectId;
 
 app.set("view engine", "ejs")
 app.use(bodyParser.json())
@@ -89,7 +89,7 @@ app.post("/login", (req, res) => {
 })
 
 app.get("/tickets", (req, res) => {
-    db.collection("tickets").find().sort( { _id: -1 } ).toArray(function (err, data) {
+    db.collection("tickets").find().sort({ _id: -1 }).toArray(function (err, data) {
         if (err) throw err;
         if (data) {
             res.status(200).json(data);
@@ -106,17 +106,33 @@ app.post("/tickets", (req, res) => {
         body: req.body.body,
         category: req.body.category,
     }, function (err) {
-            res.status(200);
+        res.status(200);
     })
 })
 
-app.post("/delete/tickets" , (req, res) => {
-    var o_id = new ObjectId(req.body.id); 
+app.post("/update/tickets", (req, res) => {
+    var o_id = new ObjectId(req.body.id);
+    db.collection("tickets").updateOne({
+        _id: o_id
+    }, {
+        $set: {
+            id_user: req.body.welcome,
+            title: req.body.title,
+            body: req.body.body,
+            category: req.body.category
+        }
+    }, function (err) {
+        res.status(200);
+    })
+})
+
+app.post("/delete/tickets", (req, res) => {
+    var o_id = new ObjectId(req.body.id);
 
     db.collection('tickets').deleteOne({
         _id: o_id,
     }, function (err) {
-            res.status(200);
+        res.status(200);
     })
 })
 

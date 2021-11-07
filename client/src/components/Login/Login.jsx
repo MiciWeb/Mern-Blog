@@ -30,7 +30,6 @@ export default function Login() {
     };
 
     if (Object.entries(cookies).length === 0) {
-        console.log("undefined")
     } else {
         return <Redirect to={{ pathname: `/${cookies.user}`}} />
     }

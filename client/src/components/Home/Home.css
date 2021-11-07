@@ -22,6 +22,11 @@
 .body{
     height: 60px;
 }
+.category{
+    height: 25px;
+    padding: 0;
+    padding-left: 15px;
+}
 .input-add::placeholder{
     color: grey;
     padding: 4px;

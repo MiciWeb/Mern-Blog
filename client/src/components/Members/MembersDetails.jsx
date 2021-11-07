@@ -45,13 +45,13 @@ export default function MembersDetails() {
                         if (ticket.id_user !== cookies.user && ticket.id_user === name) {
                             return (
                                 <>
-                                    <ul class="list-group list-group-flush">
-                                        <li key={uuid()} class="list-group-item">
-                                            {/* <a href="/shop/<%= product._id%>"> */}
-                                            <u>{ticket.title}</u>
-                                            {/* </a> */}
+                                    <ul className="list-group list-group-flush">
+                                        <li key={uuid()} className="list-group-item">
+                                            <Link to={{ pathname: `/${ticket.id_user}/${ticket._id}` }}>
+                                                <u>{ticket.title}</u>
+                                            </Link>
                                         </li>
-                                        <li key={uuid()} class="list-group-item">
+                                        <li key={uuid()} className="list-group-item">
                                             {ticket.body}
                                         </li>
                                     </ul>

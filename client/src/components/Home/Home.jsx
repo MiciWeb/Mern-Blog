@@ -7,7 +7,7 @@ import axios from "axios";
 import uuid from 'react-uuid'
 
 export default function Home() {
-    const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const [cookies, setCookie, removeCookie] = useCookies(['user'])
     const [welcome, setWelcome] = useState(cookies.user)
     const [tickets, setTickets] = useState([])
     const [error, setError] = useState("")
@@ -15,10 +15,9 @@ export default function Home() {
     const [body, setBody] = useState("")
     const [category, setCategory] = useState("")
 
-    const onTitleChange = e => setTitle(e.target.value);
-    const onBodyChange = e => setBody(e.target.value);
-    const onCategoryChange = e => setCategory(e.target.value);
-
+    const onTitleChange = e => setTitle(e.target.value)
+    const onBodyChange = e => setBody(e.target.value)
+    const onCategoryChange = e => setCategory(e.target.value)
 
     function handleLogout() {
         removeCookie("user")
@@ -31,10 +30,10 @@ export default function Home() {
     }, [])
 
     const handleSubmit = e => {
-        e.preventDefault();
+        e.preventDefault()
 
         if (body !== "" && title !== "") {
-            const data = { welcome, title, body, category };
+            const data = { welcome, title, body, category }
 
             const requestOptions = {
                 method: "POST",
@@ -46,7 +45,6 @@ export default function Home() {
         }
     }
 
-
     function handleDelete(id) {
         const requestOptions = {
             method: "POST",
@@ -57,6 +55,7 @@ export default function Home() {
         window.location.reload()
     }
 
+    
     return (
         <div className="homeContainer">
             <Link to="/login">
@@ -92,7 +91,9 @@ export default function Home() {
                             return (
                                 <>
                                     <li key={uuid()} className="list-group-item">
+                                    <Link to={{ pathname: `/${ticket.id_user}/${ticket._id}`}}>
                                         <u>{ticket.title}</u>
+                                    </Link>
                                         <button className="del" onClick={() => handleDelete(ticket._id)}><i className="far fa-trash-alt"></i></button>
                                         <button className="edit"><i className="far fa-edit"></i></button>
                                     </li>

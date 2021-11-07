@@ -56,3 +56,21 @@ db.tickets.deleteOne({
         _id: "61873a734289371def4e1e65",
     })
     
+db.tickets.updateOne({
+        _id: ObjectId("61881af8d4feb4b26061c62d"),
+        id_user: "micipsa",
+        title: "blabla",
+        body: "ifndffs",
+        category: "fdsfdfs",
+    })
+
+    db.tickets.updateOne({
+    _id: ObjectId("61881af8d4feb4b26061c62d")
+}, {
+    $set: {
+        id_user: "micipsa",
+        title: "blabla",
+        body: "ifndffs",
+        category: "fdsfdfs"
+    }
+})
