@@ -4,6 +4,7 @@ import "./Home.css"
 import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react"
 import axios from "axios";
+import uuid from 'react-uuid'
 
 export default function Home() {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
@@ -12,9 +13,11 @@ export default function Home() {
     const [error, setError] = useState("")
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
+    const [category, setCategory] = useState("")
 
     const onTitleChange = e => setTitle(e.target.value);
     const onBodyChange = e => setBody(e.target.value);
+    const onCategoryChange = e => setCategory(e.target.value);
 
 
     function handleLogout() {
@@ -31,18 +34,27 @@ export default function Home() {
         e.preventDefault();
 
         if (body !== "" && title !== "") {
-            const data = { welcome, title, body, };
+            const data = { welcome, title, body, category };
 
             const requestOptions = {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
                 body: JSON.stringify(data)
             }
-            console.log(JSON.stringify(data))
             fetch("http://localhost:4242/tickets", requestOptions)
-            // .then(response => response.json())
             window.location.reload()
         }
+    }
+
+
+    function handleDelete(id) {
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+            body: JSON.stringify({id: id})
+        }
+        fetch("http://localhost:4242/delete/tickets", requestOptions)
+        window.location.reload()
     }
 
     return (
@@ -63,25 +75,28 @@ export default function Home() {
             </div>
             <div className="tickets">
                 <h3> Your last tickets: </h3>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <input onChange={onTitleChange} value={title} placeholder="title" />
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item">
+                        <input className="input-add" onChange={onTitleChange} value={title} placeholder="title" />
                         <button className="btn btn-add btn-success" onClick={handleSubmit}>Add</button>
                     </li>
-                    <li class="list-group-item body">
-                        <input onChange={onBodyChange} value={body} placeholder="body" />
+                    <li className="list-group-item">
+                        <input className="input-add" onChange={onCategoryChange} value={category} placeholder="category" />
+                    </li>
+                    <li className="list-group-item body">
+                        <input className="input-add" onChange={onBodyChange} value={body} placeholder="body" />
                     </li>
                     <br />
                     {tickets.map((ticket) => {
                         if (cookies.user == ticket.id_user) {
                             return (
                                 <>
-                                    <li class="list-group-item">
+                                    <li key={uuid()} className="list-group-item">
                                         <u>{ticket.title}</u>
-                                        <i class="far fa-trash-alt"></i>
-                                        <i class="far fa-edit"></i>
+                                        <button className="del" onClick={() => handleDelete(ticket._id)}><i className="far fa-trash-alt"></i></button>
+                                        <button className="edit"><i className="far fa-edit"></i></button>
                                     </li>
-                                    <li class="list-group-item body">
+                                    <li key={uuid()} className="list-group-item body">
                                         {ticket.body}
                                     </li>
                                     <br />

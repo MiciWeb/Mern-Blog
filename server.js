@@ -5,6 +5,9 @@ var bodyParser = require('body-parser');
 var path = require("path")
 var sha1 = require('sha1')
 var cors = require('cors')
+var uniqid = require("uniqid")
+const date = require('date-and-time');
+var ObjectId = require('mongodb').ObjectId; 
 
 app.set("view engine", "ejs")
 app.use(bodyParser.json())
@@ -30,6 +33,7 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
     next()
 });
+
 app.use(cors())
 
 app.post("/register", (req, res) => {
@@ -74,7 +78,6 @@ app.post("/register", (req, res) => {
 })
 
 app.post("/login", (req, res) => {
-    console.log(req.body)
     db.collection("users").find({ $and: [{ login: req.body.login }, { password: sha1(req.body.password) }] }).toArray(function (err, data) {
         if (err) throw err;
         if (data[0]) {
@@ -86,7 +89,7 @@ app.post("/login", (req, res) => {
 })
 
 app.get("/tickets", (req, res) => {
-    db.collection("tickets").find().toArray(function (err, data) {
+    db.collection("tickets").find().sort( { _id: -1 } ).toArray(function (err, data) {
         if (err) throw err;
         if (data) {
             res.status(200).json(data);
@@ -97,15 +100,24 @@ app.get("/tickets", (req, res) => {
 })
 
 app.post("/tickets", (req, res) => {
-    console.log(req.body)
-
     db.collection('tickets').insertOne({
         id_user: req.body.welcome,
         title: req.body.title,
         body: req.body.body,
+        category: req.body.category,
     }, function (err) {
             res.status(200);
-    });
+    })
+})
+
+app.post("/delete/tickets" , (req, res) => {
+    var o_id = new ObjectId(req.body.id); 
+
+    db.collection('tickets').deleteOne({
+        _id: o_id,
+    }, function (err) {
+            res.status(200);
+    })
 })
 
 app.get("/users", (req, res) => {

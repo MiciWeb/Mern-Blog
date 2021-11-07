@@ -36,7 +36,23 @@ db.createCollection("tickets", {
             { id_user: { $type: "string" } },
             { title: { $type: "string" } },
             { body: { $type: "string" } },
+            { category: { $type: "string" } },
         ]
     }
 })
 
+db.tickets.insertOne({
+        _id: "fsfsdf",
+        id_user: "jnjnj",
+        title: "jiij",
+        body: "iininin",
+        category: "ijij",
+        timestamp: new Date(Date.now())
+    })
+
+- date order tickets
+
+db.tickets.deleteOne({
+        _id: "61873a734289371def4e1e65",
+    })
+    

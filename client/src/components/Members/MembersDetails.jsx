@@ -4,6 +4,7 @@ import axios from "axios"
 import { useCookies } from "react-cookie";
 import "./Members.css"
 import { Link } from "react-router-dom"
+import uuid from 'react-uuid'
 
 export default function MembersDetails() {
     const { name } = useParams()
@@ -45,12 +46,12 @@ export default function MembersDetails() {
                             return (
                                 <>
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">
+                                        <li key={uuid()} class="list-group-item">
                                             {/* <a href="/shop/<%= product._id%>"> */}
                                             <u>{ticket.title}</u>
                                             {/* </a> */}
                                         </li>
-                                        <li class="list-group-item">
+                                        <li key={uuid()} class="list-group-item">
                                             {ticket.body}
                                         </li>
                                     </ul>
