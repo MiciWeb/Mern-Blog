@@ -15,6 +15,8 @@ export default function Edit() {
     const [welcome, setWelcome] = useState(cookies.user)
     const [tickets, setTickets] = useState([])
     const [error, setError] = useState("")
+    const [comment, setComment] = useState("")
+    const [comments, setComments] = useState("")
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [category, setCategory] = useState("")
@@ -22,6 +24,7 @@ export default function Edit() {
     const onTitleChange = e => setTitle(e.target.value)
     const onBodyChange = e => setBody(e.target.value)
     const onCategoryChange = e => setCategory(e.target.value)
+    const onCommentChange = e => setComment(e.target.value);
 
 
     function handleLogout() {
@@ -31,8 +34,21 @@ export default function Edit() {
     useEffect(() => {
         axios.get("http://localhost:4242/tickets")
             .then(res => setTickets(res.data))
-            .catch(err => setError("Error when fetching tickets"))
+            .catch(err => setError("Error when fetching tickets"));
+
     }, [])
+
+     function fetchData() {
+         axios.get("http://localhost:4242/comments")
+            .then(res => { if(Array.isArray(res.data)){setComments(res.data)}else{setError("Error array")}})
+            .catch(err => setError("Error when fetching comments"));
+    }
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -50,16 +66,15 @@ export default function Edit() {
         }
     }
 
-    // function handleDelete(id) {
-    //     const requestOptions = {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
-    //         body: JSON.stringify({ id: id })
-    //     }
-    //     fetch("http://localhost:4242/delete/tickets", requestOptions)
-    //     window.location.reload()
-    // }
-
+    function handleCommentSubmit(id) {
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+            body: JSON.stringify({ id: id, user: cookies.user, comment })
+        }
+        fetch("http://localhost:4242/comments", requestOptions)
+        window.location.reload()
+    }
 
     return (
         <div className="homeContainer">
@@ -108,7 +123,7 @@ export default function Edit() {
                                         <li key={uuid()} className="list-group-item body">
                                             {ticket.body}
                                         </li>
-                                    <br />
+                                        <br />
                                     </>
                                 )
                             }
@@ -124,6 +139,25 @@ export default function Edit() {
                                         {ticket.body}
                                     </li>
                                     <br />
+                                    <u>Comment:</u>
+                                    <li key={uuid()} className="list-group-item body comment">
+                                        <ul>
+                                            {comments == [] ? <div className="Chargement">0 comments</div> :
+                                                comments.map((comment) => {
+                                                    if (ticket._id === comment.ticketid) {
+                                                        return (
+                                                            <>
+                                                                <li>
+                                                                    {comment.comment} - {comment.user}
+                                                                </li>
+                                                            </>
+                                                        )
+                                                    }
+                                                })}
+                                        </ul>
+                                    </li>
+                                    <input className="input-add" value={comment} onChange={onCommentChange} placeholder="Leave a comment" />
+                                    <button onClick={() => handleCommentSubmit(ticket._id)} class="btn btn-success btn-comment" type="submit">Add</button>
                                 </>
                             )
                         }

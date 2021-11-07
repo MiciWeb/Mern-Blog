@@ -41,6 +41,16 @@ db.createCollection("tickets", {
     }
 })
 
+db.createCollection("comments", {
+    validator: {
+        $and: [
+            { ticketid: { $type: "string" } },
+            { user: { $type: "string" } },
+            { comment: { $type: "string" } },
+        ]
+    }
+})
+
 db.tickets.insertOne({
         _id: "fsfsdf",
         id_user: "jnjnj",

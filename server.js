@@ -99,6 +99,28 @@ app.get("/tickets", (req, res) => {
     })
 })
 
+app.get("/comments", (req, res) => {
+    db.collection("comments").find().sort().toArray(function (err, data) {
+        if (err) throw err;
+        if (data) {
+            res.status(200).json(data);
+        } else {
+            res.status(400).json("error when fetching")
+        }
+    })
+})
+
+app.post("/comments", (req, res) => {
+    console.log(req.body)
+    db.collection('comments').insertOne({
+        ticketid: req.body.id,
+        user: req.body.user,
+        comment: req.body.comment,
+    }, function (err) {
+        res.status(200);
+    })
+})
+
 app.post("/tickets", (req, res) => {
     db.collection('tickets').insertOne({
         id_user: req.body.welcome,

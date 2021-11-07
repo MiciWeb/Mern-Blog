@@ -55,6 +55,10 @@ export default function Home() {
         window.location.reload()
     }
 
+    const [name, setName] = useState("")
+    const handleInput = (e) => {
+        setName(e.target.value)
+      }
     
     return (
         <div className="homeContainer">
@@ -74,6 +78,8 @@ export default function Home() {
             </div>
             <div className="tickets">
                 <h3> Your last tickets: </h3>
+                <input className="input-add form-control" onChange={handleInput} placeholder="search"/>
+                <br/>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">
                         <input className="input-add" onChange={onTitleChange} value={title} placeholder="title" />
@@ -87,6 +93,9 @@ export default function Home() {
                     </li>
                     <br />
                     {tickets.map((ticket) => {
+                         if (ticket.title.toLowerCase().indexOf(name.toLowerCase()) === -1 && ticket.body.toLowerCase().indexOf(name.toLowerCase()) === -1) {
+                            return
+                          }
                         if (cookies.user == ticket.id_user) {
                             return (
                                 <>
@@ -95,7 +104,6 @@ export default function Home() {
                                         <u>{ticket.title}</u>
                                     </Link>
                                         <button className="del" onClick={() => handleDelete(ticket._id)}><i className="far fa-trash-alt"></i></button>
-                                        <button className="edit"><i className="far fa-edit"></i></button>
                                     </li>
                                     <li key={uuid()} className="list-group-item body">
                                         {ticket.body}

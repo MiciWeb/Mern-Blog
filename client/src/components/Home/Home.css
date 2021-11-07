@@ -15,21 +15,33 @@
     transform: translateY(-5px);
     float: right;
 }
-.far{
+.comment{
+    height: 200px !important;
+}
+.del{
     float: right;
     margin-left: 10px;
+    border: 1px solid white;
+    background-color: white;
 }
 .body{
     height: 60px;
+    overflow: auto;
 }
 .category{
     height: 25px;
     padding: 0;
     padding-left: 15px;
 }
+.btn-comment{
+    margin-left: 5px;
+}
 .input-add::placeholder{
     color: grey;
     padding: 4px;
+}
+.input-add{
+    color: black;
 }
 .tickets{
     margin-top: 40px !important;

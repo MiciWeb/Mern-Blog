@@ -23,6 +23,11 @@ export default function MembersDetails() {
             .catch(err => setError("Error when fetching tickets"))
     }, [])
 
+    const [search, setSearch] = useState("")
+    const handleInput = (e) => {
+        setSearch(e.target.value)
+      }
+
     return (
         <div>
             <div className="homeContainer">
@@ -41,7 +46,12 @@ export default function MembersDetails() {
                     <p>{error}</p>
                 </div>
                 <div className="tickets">
+                <input className="input-add form-control" onChange={handleInput} placeholder="Search"/>
+                <br/>
                     {tickets.map((ticket) => {
+                        if (ticket.title.toLowerCase().indexOf(search.toLowerCase()) === -1 && ticket.body.toLowerCase().indexOf(search.toLowerCase()) === -1) {
+                            return
+                          }
                         if (ticket.id_user !== cookies.user && ticket.id_user === name) {
                             return (
                                 <>
