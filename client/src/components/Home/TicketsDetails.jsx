@@ -145,7 +145,6 @@ export default function Edit() {
                                                                 <li>
                                                                     {comment.comment} de -{comment.user} 
                                                                     <button className="del" onClick={() => handleDelete(comment._id)}><i className="far fa-trash-alt"></i></button>
-
                                                                 </li>
                                                             </>
                                                         )
