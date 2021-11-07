@@ -10,7 +10,11 @@ export default function Home() {
     const [welcome, setWelcome] = useState(cookies.user)
     const [tickets, setTickets] = useState([])
     const [error, setError] = useState("")
+    const [title, setTitle] = useState("")
+    const [body, setBody] = useState("")
 
+    const onTitleChange = e => setTitle(e.target.value);
+    const onBodyChange = e => setBody(e.target.value);
 
 
     function handleLogout() {
@@ -26,19 +30,20 @@ export default function Home() {
     const handleSubmit = e => {
         e.preventDefault();
 
-            const data = { login, email, password };
+        if (body !== "" && title !== "") {
+            const data = { welcome, title, body, };
 
             const requestOptions = {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
                 body: JSON.stringify(data)
             }
-
-            fetch("http://localhost:4242/register", requestOptions)
-                .then(response => response.json())
-                .then(res => setError(res))
+            console.log(JSON.stringify(data))
+            fetch("http://localhost:4242/tickets", requestOptions)
+            // .then(response => response.json())
+            window.location.reload()
         }
-    };
+    }
 
     return (
         <div className="homeContainer">
@@ -60,11 +65,11 @@ export default function Home() {
                 <h3> Your last tickets: </h3>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <input placeholder="title" />
+                        <input onChange={onTitleChange} value={title} placeholder="title" />
                         <button className="btn btn-add btn-success" onClick={handleSubmit}>Add</button>
                     </li>
                     <li class="list-group-item body">
-                        <input placeholder="body" />
+                        <input onChange={onBodyChange} value={body} placeholder="body" />
                     </li>
                     <br />
                     {tickets.map((ticket) => {

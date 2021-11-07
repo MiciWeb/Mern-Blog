@@ -28,9 +28,10 @@ export default function Register() {
         body: JSON.stringify(data)
       }
 
-      fetch("http://localhost:4242/register", requestOptions)
-        .then(response => response.json())
-        .then(res => setError(res))
+        fetch("http://localhost:4242/register", requestOptions)
+          .then(response => response.json())
+          .then(res => setError(res))
+
     }
   };
 

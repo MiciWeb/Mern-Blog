@@ -96,8 +96,16 @@ app.get("/tickets", (req, res) => {
     })
 })
 
-app.get("/tickets", (req, res) => {
+app.post("/tickets", (req, res) => {
     console.log(req.body)
+
+    db.collection('tickets').insertOne({
+        id_user: req.body.welcome,
+        title: req.body.title,
+        body: req.body.body,
+    }, function (err) {
+            res.status(200);
+    });
 })
 
 app.get("/users", (req, res) => {
