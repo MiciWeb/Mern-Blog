@@ -19,7 +19,7 @@ MongoClient.connect(
     { useNewUrlParser: true, useUnifiedTopology: true },
     function (err, client) {
         db = client.db()
-        app.listen(port,()=>{
+        app.listen(port, () => {
             console.log("server started at http://localhost:" + port)
         })
     }
@@ -31,14 +31,6 @@ app.use(function (req, res, next) {
     next()
 });
 app.use(cors())
-
-
-app.get('/billets', function (req, res) {
-    db.collection('billets').find({}).toArray(function (err, data) {
-        if (err) throw err
-        res.status(200).json(data)
-    })
-})
 
 app.post("/register", (req, res) => {
     // check if email or login already exist then insert to database
@@ -81,10 +73,6 @@ app.post("/register", (req, res) => {
     })
 })
 
-// app.get('/login', function (req, res) {
-//     res.render('login', { error: "" })
-// })
-
 app.post("/login", (req, res) => {
     console.log(req.body)
     db.collection("users").find({ $and: [{ login: req.body.login }, { password: sha1(req.body.password) }] }).toArray(function (err, data) {
@@ -93,6 +81,32 @@ app.post("/login", (req, res) => {
             res.status(200).json(req.body.login);
         } else {
             res.status(400).json("Login and password doesnt match")
+        }
+    })
+})
+
+app.get("/tickets", (req, res) => {
+    db.collection("tickets").find().toArray(function (err, data) {
+        if (err) throw err;
+        if (data) {
+            res.status(200).json(data);
+        } else {
+            res.status(400).json("error when fetching")
+        }
+    })
+})
+
+app.get("/tickets", (req, res) => {
+    console.log(req.body)
+})
+
+app.get("/users", (req, res) => {
+    db.collection("users").find().toArray(function (err, data) {
+        if (err) throw err;
+        if (data) {
+            res.status(200).json(data);
+        } else {
+            res.status(400).json("error when fetching")
         }
     })
 })

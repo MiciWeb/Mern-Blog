@@ -10,7 +10,6 @@ export default function Login() {
     const [error, setError] = useState("")
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
-
     const onLoginChange = e => setLogin(e.target.value);
     const onPasswordChange = e => setPassword(e.target.value)
 
@@ -27,6 +26,7 @@ export default function Login() {
         })
             .then(res => setCookie("user", res.data, { path: "/" }))
             .catch(err => setError("Password and login dont match !"))
+
     };
 
     if (Object.entries(cookies).length === 0) {

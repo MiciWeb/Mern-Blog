@@ -8,30 +8,14 @@
     height: 13vh;
     border: 1px solid;
 }
-.btn-add{
-    background-color: #2ecc71;
-    margin-bottom: 8px;
-    transform: translateY(-5px);
-    float: right;
-}
-.far{
-    float: right;
-    margin-left: 10px;
-}
-.body{
-    height: 60px;
-}
-input::placeholder{
-    color: grey;
-    padding: 4px;
-}
 .tickets{
     margin-top: 40px !important;
     width: 40vw;
     margin: auto;
 }
-li{
+u{
     color: black;
+    font-size: 16px;
 }
 .formButtonHome {
     float: right;
